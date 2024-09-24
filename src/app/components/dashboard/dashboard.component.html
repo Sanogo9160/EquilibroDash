@@ -1,0 +1,79 @@
+<div class="dashboard">
+  <!-- Sidebar -->
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <img src="assets/logo.png" alt="Equilibro Logo" class="logo" />
+      <mat-nav-list>
+        <mat-list-item>Accueil</mat-list-item>
+        <mat-list-item>Menus Personnalisés</mat-list-item>
+        <mat-list-item>Consultation Avec Un Nutritionniste</mat-list-item>
+        <mat-list-item>Suivi et Historique Alimentaire</mat-list-item>
+        <mat-list-item>Vertus des Aliments</mat-list-item>
+        <mat-list-item>Notifications et Rappels</mat-list-item>
+        <mat-list-item>Conseils Nutritionnels et Bien-être</mat-list-item>
+        <mat-list-item>Prendre Rendez-Vous</mat-list-item>
+        <mat-list-item>Statistique et Rapport</mat-list-item>
+        <mat-list-item>Listes des utilisateurs</mat-list-item>
+        <mat-list-item>Communauté et Partage</mat-list-item>
+        <mat-list-item>Mon Profil Santé</mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main content -->
+    <mat-sidenav-content>
+      <div class="header">
+        <h1>Accueil</h1>
+        <div class="user-info">
+          <span>Bonjour, SANOGO</span>
+          <mat-icon>notifications</mat-icon>
+          <button mat-raised-button color="primary">Consultation</button>
+        </div>
+      </div>
+
+      <!-- Statistiques -->
+      <div class="stats-container">
+        <div class="stat-box">
+          <mat-icon>shopping_cart</mat-icon>
+          <p>Total Orders: 75</p>
+        </div>
+        <div class="stat-box">
+          <mat-icon>local_shipping</mat-icon>
+          <p>Total Delivered: 357</p>
+        </div>
+        <div class="stat-box">
+          <mat-icon>cancel</mat-icon>
+          <p>Total Canceled: 65</p>
+        </div>
+        <div class="stat-box">
+          <mat-icon>attach_money</mat-icon>
+          <p>Total Revenue: $128</p>
+        </div>
+      </div>
+
+      <!-- Graphiques et rapports -->
+
+      <div class="chart-container">
+        <h2>Statistiques et Rapport</h2>
+        <div class="chart" *ngFor="let chart of charts">
+          <p>{{ chart.name }}</p>
+          <canvas baseChart
+                  [data]="chart.data"
+                  [chartType]="'doughnut'"
+                  [options]="{ responsive: true }">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Vertus des Aliments -->
+      <div class="food-virtues">
+        <h2>Vertus des aliments</h2>
+        <div class="food-card" *ngFor="let food of foods">
+          <img [src]="food.image" alt="{{ food.name }}" />
+          <h3>{{ food.name }}</h3>
+          <p>{{ food.description }}</p>
+          <button mat-button>Voir plus</button>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
