@@ -36,16 +36,21 @@ export class LoginComponent {
   // Méthode appelée lors de la soumission du formulaire de connexion
 
   onSubmit() {
-    this.loading = true;  // Active le spinner de chargement
+    this.loading = true;
 
     this.authService.login(this.email, this.motDePasse).subscribe({
       next: (response) => {
-        this.loading = false;  // Désactive le spinner
-        this.router.navigate(['/dashboard']); // Redirige après connexion
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        this.loading = false;  // Désactive le spinner en cas d'erreur
-        this.errorMessage = 'Erreur de connexion, veuillez vérifier vos identifiants';
+        this.loading = false;
+        if (error.status === 401) {
+          this.errorMessage = 'Identifiants invalides';
+        } else {
+          this.errorMessage = 'Erreur de connexion, veuillez réessayer.';
+        }
+        console.error('Erreur de connexion:', error);
       },
     });
   }

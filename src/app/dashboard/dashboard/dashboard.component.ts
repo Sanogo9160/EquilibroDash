@@ -4,6 +4,10 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
 import {CommonModule} from "@angular/common";
+import {MatToolbar} from "@angular/material/toolbar";
+import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
+import {MatButton} from "@angular/material/button";
+import {RouterLink, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +17,14 @@ import {CommonModule} from "@angular/common";
     CommonModule,
     MatNavList,
     MatListItem,
-    MatIcon
+    MatIcon,
+    MatToolbar,
+    MatCard,
+    MatCardHeader,
+    MatCardContent,
+    MatButton,
+    RouterLink,
+    RouterOutlet,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

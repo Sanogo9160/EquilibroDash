@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {environment} from "../environments/environment";
+import {isPlatformBrowser} from "@angular/common";
 
 
 @Injectable({
@@ -13,34 +14,37 @@ import {environment} from "../environments/environment";
 export class AuthService {
   private apiUrl = environment.apiUrl; // Défini dans environment.ts
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object ,private http: HttpClient, private router: Router) {
   }
 
   // Connexion utilisateur avec email et mot de passe
   login(email: string, motDePasse: string): Observable<any> {
     return this.http
-      .post(`${this.apiUrl}/auth/login`, {email, motDePasse}) // Requête vers l'API
+      .post<{ token: string }>(`${this.apiUrl}/auth/login`, { email, motDePasse }) // Indiquez que vous attendez un objet avec un token
       .pipe(
-        tap((response: any) => {
-          localStorage.setItem('token', response); // Stocker le token JWT dans le localStorage
+        tap((response) => {
+          if (response.token && isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('token', response.token); // Stocke le token uniquement dans le navigateur
+          }
         })
       );
   }
 
   // Vérifie si l'utilisateur est connecté
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    return isPlatformBrowser(this.platformId) ? !!localStorage.getItem('token') : false; // Vérifie si l'utilisateur est authentifié
   }
 
   // Déconnexion
   logout() {
-    localStorage.removeItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token'); // Supprime le token uniquement dans le navigateur
+    }
     this.router.navigate(['/auth/login']);
   }
-
   // Récupérer le token JWT
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return isPlatformBrowser(this.platformId) ? localStorage.getItem('token') : null; // Récupère le token uniquement dans le navigateur
   }
 
   // Ajoute le token JWT dans les headers pour les requêtes authentifiées
@@ -50,4 +54,5 @@ export class AuthService {
       Authorization: `Bearer ${token}`, // Ajouter le token dans les headers des requêtes
     });
   }
+
 }
