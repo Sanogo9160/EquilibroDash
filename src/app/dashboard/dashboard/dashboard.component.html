@@ -1,0 +1,15 @@
+<mat-sidenav-container class="dashboard-container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <mat-list-item><mat-icon>home</mat-icon> Accueil</mat-list-item>
+      <mat-list-item><mat-icon>person</mat-icon> Mon Profil</mat-list-item>
+      <mat-list-item><mat-icon>restaurant</mat-icon> Planification des Repas</mat-list-item>
+      <mat-list-item><mat-icon>bar_chart</mat-icon> Statistiques</mat-list-item>
+      <mat-list-item><button mat-button (click)="logout()">Se Déconnecter</button></mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <h1>Bienvenue sur votre Tableau de Bord</h1>
+  </mat-sidenav-content>
+</mat-sidenav-container>

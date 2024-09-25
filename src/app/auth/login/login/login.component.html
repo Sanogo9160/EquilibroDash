@@ -1,0 +1,36 @@
+<div class="login-container">
+  <div class="login-box">
+    <h4>Bienvenue sur Equilibro</h4>
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Email Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required placeholder="Votre email">
+        <mat-error *ngIf="!email">Veuillez entrer un email valide</mat-error>
+      </mat-form-field>
+
+      <!-- Password Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de Passe</mat-label>
+        <input matInput [(ngModel)]="motDePasse" name="motDePasse" type="password" required placeholder="Votre mot de passe">
+        <mat-error *ngIf="!motDePasse">Veuillez entrer votre mot de passe</mat-error>
+      </mat-form-field>
+
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="login-button">
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        <span *ngIf="!loading">Se Connecter</span>
+      </button>
+
+      <!-- Error Message -->
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+      <!-- Link to Create Account -->
+      <p class="create-account">
+        Vous n'avez pas de compte ?
+        <a href="javascript:void(0)" (click)="goToCreateAccount()">Créer un compte</a>
+      </p> <!-- Lien vers la page de création de compte -->
+
+    </form>
+  </div>
+</div>
