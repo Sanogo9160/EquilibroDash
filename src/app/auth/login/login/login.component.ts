@@ -7,6 +7,7 @@ import {CommonModule} from "@angular/common";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatInputModule,
     MatButtonModule,
     MatProgressSpinner,
+    MatIcon,
 
   ],
   templateUrl: './login.component.html',
@@ -59,4 +61,7 @@ export class LoginComponent {
     this.router.navigate(['/register']); // Redirige vers la page de création de compte
   }
 
+  onForgotPassword() {
+
+  }
 }

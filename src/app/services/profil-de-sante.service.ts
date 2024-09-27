@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ProfilDeSante} from "../models/ProfilDeSante";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfilDeSanteService {
 
-  private apiUrl = 'http://localhost:8080/api/profils';  // Ton endpoint backend
+  private apiUrl = `${environment.apiUrl}/profils`;  // URL base du backend
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Méthode pour créer un nouveau profil de santé
+  // Headers avec le token
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('authToken');  // Récupération du token
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  }
+
+  // Créer un profil
   creerProfil(profil: ProfilDeSante): Observable<ProfilDeSante> {
-    return this.http.post<ProfilDeSante>(`${this.apiUrl}/creer`, profil);
+    return this.http.post<ProfilDeSante>(`${this.apiUrl}/creer`, profil, { headers: this.getAuthHeaders() });
   }
 
-  // Méthode pour obtenir un profil de santé par ID
+  // Obtenir un profil par ID
   obtenirProfilParId(id: number): Observable<ProfilDeSante> {
-    return this.http.get<ProfilDeSante>(`${this.apiUrl}/${id}`);
+    return this.http.get<ProfilDeSante>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
-  // Méthode pour modifier un profil de santé
-  modifierProfil(id: number, profil: ProfilDeSante): Observable<ProfilDeSante> {
-    return this.http.put<ProfilDeSante>(`${this.apiUrl}/modifier/${id}`, profil);
+  // Modifier un profil
+  modifierProfil(id: number | undefined, profil: ProfilDeSante): Observable<ProfilDeSante> {
+    return this.http.put<ProfilDeSante>(`${this.apiUrl}/modifier/${id}`, profil, { headers: this.getAuthHeaders() });
   }
 
-  // Méthode pour supprimer un profil de santé par ID
+  // Supprimer un profil
   supprimerProfil(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`, { headers: this.getAuthHeaders() });
   }
-
 }
