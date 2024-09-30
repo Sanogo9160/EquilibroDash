@@ -29,7 +29,6 @@ export const routes: Routes = [
   { path: 'rapports-analyses', component: RapportComponent },
   { path: 'communaute-ressources', component: CommunauteRessourcesComponent },
   { path: 'mon-profil', component: MonprofilComponent  },
-  { path: '**', redirectTo: '/auth/login' }
 
 ];
 

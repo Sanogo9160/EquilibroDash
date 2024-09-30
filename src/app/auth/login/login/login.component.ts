@@ -61,7 +61,4 @@ export class LoginComponent {
     this.router.navigate(['/register']); // Redirige vers la page de création de compte
   }
 
-  onForgotPassword() {
-
-  }
 }

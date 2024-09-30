@@ -8,6 +8,7 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
 import {RouterLink, RouterOutlet} from "@angular/router";
+import {LoginComponent} from "../../auth/login/login/login.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,7 @@ import {RouterLink, RouterOutlet} from "@angular/router";
     MatButton,
     RouterLink,
     RouterOutlet,
+    LoginComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
