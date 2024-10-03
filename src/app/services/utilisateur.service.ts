@@ -13,9 +13,9 @@ export class UtilisateurService {
 
   constructor(private http: HttpClient) { }
 
-  // Fetch all users
-  getAllUtilisateurs(): Observable<Utilisateur[]> {
-    return this.http.get<Utilisateur[]>(`${this.apiUrl}/liste`);
+  // Méthode pour récupérer tous les utilisateurs
+  obtenirTousLesUtilisateurs(): Observable<Utilisateur[]> {
+    return this.http.get<Utilisateur[]>(this.apiUrl);
   }
 
   // Delete a user by ID

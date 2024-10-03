@@ -12,26 +12,27 @@ import {CommonModule} from "@angular/common";
 })
 export class ListeUtilisateurComponent implements OnInit{
 
-  utilisateurs: Utilisateur[] = [];  // Array to store the list of users
+  utilisateurs: Utilisateur[] = [];
+  loading: boolean = true; // Pour gérer l'état de chargement
 
-  constructor(private utilisateurService: UtilisateurService) { }
+  constructor(private utilisateurService: UtilisateurService) {}
 
   ngOnInit(): void {
-    this.getAllUtilisateurs();  // Fetch the users when the component is initialized
+    this.obtenirUtilisateurs();
   }
 
-  // Fetch all users from the service
-  getAllUtilisateurs(): void {
-    this.utilisateurService.getAllUtilisateurs().subscribe(
-      (data: Utilisateur[]) => {
+  obtenirUtilisateurs(): void {
+    this.utilisateurService.obtenirTousLesUtilisateurs().subscribe({
+      next: (data) => {
         this.utilisateurs = data;
+        this.loading = false; // Fin du chargement
       },
-      (error) => {
+      error: (error) => {
         console.error('Erreur lors de la récupération des utilisateurs', error);
+        this.loading = false; // Fin du chargement même en cas d'erreur
       }
-    );
+    });
   }
-
   // Delete a user
   deleteUtilisateur(id: number): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {

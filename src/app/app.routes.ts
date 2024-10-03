@@ -13,6 +13,7 @@ import {MonprofilComponent} from "./components/monprofil/monprofil.component";
 import {CommunauteRessourcesComponent} from "./components/communaute-ressources/communaute-ressources.component";
 import {SuiviNutritionnelComponent} from "./components/suivi-nutritionnel/suivi-nutritionnel.component";
 import {VertusAlimentsComponent} from "./components/vertus-aliments/vertus-aliments.component";
+import {ListeUtilisateurComponent} from "./components/Utilisateur/liste-utilisateur/liste-utilisateur.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' }, // Route par défaut redirigée vers la page de login
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'activite-physique', component: ProgrammeExerciceComponent },
   { path: 'rapports-analyses', component: RapportComponent },
   { path: 'communaute-ressources', component: CommunauteRessourcesComponent },
+  { path: 'utilisateurs',component:ListeUtilisateurComponent},
   { path: 'mon-profil', component: MonprofilComponent  },
 
 ];
