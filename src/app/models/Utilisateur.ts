@@ -1,8 +1,21 @@
-export class Utilisateur {
-  id!: number;
-  nom!: string;
-  email!: string;
-  telephone!: string;
-  role!: any; // Type pour le rôle, à ajuster selon vos besoins
-  profilDeSante!: any; // Type pour le profil de santé, à ajuster selon vos besoins
+import {Role} from "./Role";
+import {ProfilDeSante} from "./ProfilDeSante";
+
+export interface Utilisateur {
+  id: number;
+  nom: string;
+  email: string;
+  motDePasse: string;
+  telephone: string;
+  poids: number;
+  taille: number;
+  age: number;
+  sexe: string;
+  niveauActivite: string;
+  role: Role;
+  profilDeSante: ProfilDeSante;
 }
+
+
+
+

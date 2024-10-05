@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
-import {DashboardComponent} from "./dashboard/dashboard/dashboard.component";
+
 import {LoginComponent} from "./auth/login/login/login.component";
-import {AuthService} from "./auth/auth.service";
 import {CommonModule} from "@angular/common";
-import {ListeUtilisateurComponent} from "./components/Utilisateur/liste-utilisateur/liste-utilisateur.component";
+import {DashboardComponent} from "./components/dashboard/dashboard.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, LoginComponent, CommonModule, ListeUtilisateurComponent],
+  imports: [RouterOutlet, DashboardComponent, LoginComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

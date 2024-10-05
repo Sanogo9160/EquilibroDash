@@ -1,0 +1,116 @@
+<div class="container-fluid dashboard-container">
+  <!-- Header avec barre de recherche et notifications -->
+  <header class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand" href="#">
+        <img src="assets/images/logo3.png" alt="Equilibro Logo" width="30" height="30">
+        EQUILIBRO
+      </a>
+
+      <!-- Barre de recherche -->
+      <form class="d-flex ms-auto">
+        <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Recherche</button>
+      </form>
+
+      <!-- Notifications et profil utilisateur -->
+      <div class="d-flex align-items-center ms-auto">
+        <!-- Icône de notifications -->
+        <a class="nav-link" href="#" title="Notifications">
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <div class="row">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="text-center py-3">
+        <img src="assets/images/logo3.png" alt="Equilibro Logo" class="img-fluid logo-sidebar" />
+      </div>
+
+      <!-- Navigation items -->
+      <ul class="nav flex-column text-white">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/accueil">
+            <i class="bi bi-speedometer2"></i> Accueil
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/profil-sante">
+            <i class="bi bi-heart-pulse"></i> Profil de Santé
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/planification-repas">
+            <i class="bi bi-egg-fried"></i> Planification des Repas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/suivi-nutritionnel">
+            <i class="bi bi-bar-chart"></i> Suivi Nutritionnel
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/vertus-aliments">
+            <i class="bi bi-cup-hot"></i> Vertus Des Aliments
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/alertes-notifications">
+            <i class="bi bi-bell"></i> Alertes et Notifications
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/consultations">
+            <i class="bi bi-calendar"></i> Consultations
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/activite-physique">
+            <i class="bi bi-person-lines-fill"></i> Activité Physique
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/rapports-analyses">
+            <i class="bi bi-graph-up"></i> Rapports et Analyses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/communaute-ressources">
+            <i class="bi bi-people"></i> Communauté et Ressources
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/utilisateurs">
+            <i class="bi bi-people"></i> Utilisateurs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/mon-profil">
+            <i class="bi bi-person"></i> Mon Profil
+          </a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-link nav-link text-white" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Se Déconnecter
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <router-outlet></router-outlet> <!-- Affiche les routes enfants ici -->
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container text-center">
+      <span>© 2024 EQUILIBRO - Tous droits réservés</span>
+    </div>
+  </footer>
+</div>
