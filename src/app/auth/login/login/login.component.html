@@ -1,92 +1,29 @@
-<div class="login-container">
-  <!-- Section gauche (Connexion) -->
-  <div class="left-section">
-    <img src="assets/images/logo3.png" alt="Logo Equilibro" class="logo">
-    <h2 class="welcome-title">Bienvenue sur Equilibro</h2>
-    <p class="welcome-message">
-      Votre santé, notre priorité : Découvrez des menus personnalisés adaptés à vos besoins.
-      Accédez à des nutritionnistes et découvrez les bienfaits des aliments que vous consommez !
-    </p>
-  </div>
-
-  <!-- Section droite (Création de compte) -->
-  <div class="right-section">
-    <!-- Formulaire de connexion -->
-    <form (ngSubmit)="onSubmit()" class="login-form">
-      <!-- Champ Email -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="email" name="email" required placeholder="Votre email">
-        <mat-error *ngIf="!email">Veuillez entrer un email valide</mat-error>
-      </mat-form-field>
-
-      <!-- Champ Mot de Passe -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Mot de Passe</mat-label>
-        <input matInput [(ngModel)]="motDePasse" name="motDePasse" type="password" required placeholder="Votre mot de passe">
-        <mat-error *ngIf="!motDePasse">Veuillez entrer votre mot de passe</mat-error>
-      </mat-form-field>
-
-      <!-- Bouton Se Connecter -->
-      <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="sign-up-button">
-        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-        <span *ngIf="!loading">Se Connecter</span>
-      </button>
-
-      <!-- Message d'erreur -->
-      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-
-      <!-- Lien vers la création de compte -->
-      <p class="create-account">
-        Vous n'avez pas de compte ?
-        <a href="javascript:void(0)" (click)="goToCreateAccount()">Créer un compte</a>
+<div class="container login-container">
+  <div class="row align-items-center justify-content-center">
+    <!-- Section gauche -->
+    <div class="col-md-5 text-center left-section">
+      <img src="assets/images/logo3.png" alt="Logo Equilibro" class="logo mb-4">
+      <h2 class="welcome-title">Bienvenue sur Equilibro</h2>
+      <p class="welcome-message">
+        Prenez soin de votre santé avec des repas équilibrés et personnalisés. Suivez vos objectifs nutritionnels au quotidien.
       </p>
-    </form>
-  </div>
-</div>
-
-<div class="login-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
-  <!-- Section gauche (Connexion) -->
-  <div class="left-section mat-elevation-z4" fxFlex="40" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center center">
-    <img src="assets/images/logo2.png" alt="Logo Equilibro" class="logo" />
-    <h2 class="welcome-title mat-display-1">Bienvenue sur Equilibro</h2>
-    <p class="welcome-message mat-body-1">
-      Votre santé, notre priorité : Découvrez des menus personnalisés adaptés à vos besoins.
-      Accédez à des nutritionnistes et découvrez les bienfaits des aliments que vous consommez !
-    </p>
-  </div>
-
-  <!-- Section droite (Création de compte) -->
-  <div class="right-section mat-elevation-z4" fxFlex="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center center">
-    <form (ngSubmit)="onSubmit()" class="login-form" fxLayout="column" fxLayoutGap="20px">
-      <!-- Champ Email -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="email" name="email" type="email" required placeholder="Votre email" aria-label="Email" />
-        <mat-error *ngIf="!email">Veuillez entrer un email valide</mat-error>
-      </mat-form-field>
-
-      <!-- Champ Mot de Passe -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Mot de Passe</mat-label>
-        <input matInput [(ngModel)]="motDePasse" name="motDePasse" type="password" required placeholder="Votre mot de passe" aria-label="Mot de passe" />
-        <mat-error *ngIf="!motDePasse">Veuillez entrer votre mot de passe</mat-error>
-      </mat-form-field>
-
-      <!-- Bouton Se Connecter -->
-      <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="sign-up-button" fxLayoutAlign="center center">
-        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-        <span *ngIf="!loading">Se Connecter</span>
-      </button>
-
-      <!-- Message d'erreur -->
-      <mat-error *ngIf="errorMessage" class="error">{{ errorMessage }}</mat-error>
-
-      <!-- Lien vers la création de compte -->
-      <p class="create-account mat-body-1">
-        Vous n'avez pas de compte ?
-        <a href="javascript:void(0)" (click)="goToCreateAccount()">Créer un compte</a>
-      </p>
-    </form>
+    </div>
+    <!-- Section droite -->
+    <div class="col-md-5 right-section">
+      <form (ngSubmit)="onSubmit()" class="login-form">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Entrez votre email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de Passe</label>
+          <input type="password" class="form-control" id="password" [(ngModel)]="motDePasse" name="motDePasse" placeholder="Entrez votre mot de passe">
+        </div>
+        <button type="submit" class="btn btn-close-white w-100">Se Connecter</button>
+        <p class="create-account mt-3 text-center">
+          Vous n'avez pas de compte ? <a href="#" (click)="goToCreateAccount()">Créer un compte</a>
+        </p>
+      </form>
+    </div>
   </div>
 </div>

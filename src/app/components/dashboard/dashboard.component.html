@@ -2,25 +2,11 @@
   <!-- Header avec barre de recherche et notifications -->
   <header class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <!-- Logo -->
-      <a class="navbar-brand" href="#">
-        <img src="assets/images/logo3.png" alt="Equilibro Logo" width="30" height="30">
-        EQUILIBRO
-      </a>
-
       <!-- Barre de recherche -->
       <form class="d-flex ms-auto">
         <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Recherche</button>
       </form>
 
-      <!-- Notifications et profil utilisateur -->
-      <div class="d-flex align-items-center ms-auto">
-        <!-- Icône de notifications -->
-        <a class="nav-link" href="#" title="Notifications">
-        </a>
-
-      </div>
     </div>
   </header>
 
@@ -60,7 +46,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard/alertes-notifications">
-            <i class="bi bi-bell"></i> Alertes et Notifications
+            <i class="bi bi-bell"></i> Alertes et Rappels
           </a>
         </li>
         <li class="nav-item">
@@ -80,7 +66,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard/communaute-ressources">
-            <i class="bi bi-people"></i> Communauté et Ressources
+            <i class="bi bi-people"></i> Communauté
           </a>
         </li>
         <li class="nav-item">
@@ -101,9 +87,9 @@
       </ul>
     </nav>
 
-    <!-- Main content -->
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <router-outlet></router-outlet> <!-- Affiche les routes enfants ici -->
+    <!-- Main -->
+    <main class="col-md-7 ms-sm-auto col-lg-9 ">
+      <router-outlet></router-outlet>
     </main>
   </div>
 
