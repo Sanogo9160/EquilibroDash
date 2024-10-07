@@ -6,10 +6,9 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {ProfilSanteComponent} from "./components/profil-sante/profil-sante.component";
 import {SuiviNutritionnelComponent} from "./components/suivi-nutritionnel/suivi-nutritionnel.component";
 import {PlanificationRepasComponent} from "./components/planification-repas/planification-repas.component";
-import {
-  CreerAdmininistrateurComponent
-} from "./components/utilisateurs/creer-admininistrateur/creer-admininistrateur.component";
 import {UtilisateursComponent} from "./components/utilisateurs/utilisateurs.component";
+import {AcceuilComponent} from "./components/acceuil/acceuil.component";
+import {RoleComponent} from "./components/role/role.component";
 
 export const routes: Routes = [
 
@@ -26,12 +25,12 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard], // Utilisateur authentifié uniquement
     children: [
+      { path: 'acceuil', component: AcceuilComponent },
       { path: 'profil-sante', component: ProfilSanteComponent }, // Page Profil de Santé
       { path: 'planification-repas', component: PlanificationRepasComponent }, // Page Planification des Repas
       { path: 'suivi-nutritionnel', component: SuiviNutritionnelComponent }, // Page Suivi Nutritionnel
+      { path: 'role', component: RoleComponent },
       { path: 'utilisateurs', component: UtilisateursComponent},
-      { path: 'creer-administrateur', component: CreerAdmininistrateurComponent },
-
     ]
   },
 

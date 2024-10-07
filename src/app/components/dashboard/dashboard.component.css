@@ -31,9 +31,12 @@
 }
 
 
+/* Ajustement du main */
 main {
-
-
+  height: calc(100vh - 56px); /* La hauteur totale du viewport moins la hauteur de la navbar (si 56px est la hauteur de ta navbar) */
+  margin-top: 56px; /* Si ta navbar a 56px de hauteur, ajuste ici en fonction de ta navbar */
+  overflow-y: auto; /* Ajout de scroll si le contenu dépasse */
+  padding: 20px; /* Pour ajouter un peu de padding */
 }
 
 /* Footer  */
@@ -45,9 +48,10 @@ main {
   background-color: #00796b;
   padding: 1rem;
   text-align: center;
-  z-index: 100;
+  z-index: 200;
   color: white;
   border-top: 1px solid #e9ecef;
+
 }
 
 /* Optional: Style for the search bar and notification area */

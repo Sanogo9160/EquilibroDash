@@ -11,7 +11,7 @@ export interface Utilisateur {
   taille: number;
   age: number;
   sexe: string;
-  niveauActivite: string;
+  domaineActivite: string;
   role: Role;
   profilDeSante: ProfilDeSante;
 }

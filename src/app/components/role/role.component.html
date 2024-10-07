@@ -1,0 +1,44 @@
+<h2>Liste des rôles</h2>
+
+<!-- Bouton pour afficher le formulaire de création -->
+<button (click)="showCreateForm()" class="btn btn-primary">Créer un nouveau rôle</button>
+
+<!-- Table des rôles, visible seulement si isFormVisible est false -->
+<table class="table" *ngIf="!isFormVisible">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nom</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let role of roles">
+    <td>{{ role.id }}</td>
+    <td>{{ role.nom }}</td>
+    <td>
+      <button (click)="editRole(role)" class="btn btn-primary">
+        <fa-icon [icon]="faEdit"></fa-icon>
+      </button>
+      <button (click)="supprimerRole(role.id!)" class="btn btn-danger">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<!-- Formulaire de création/édition, visible seulement si isFormVisible est true -->
+<div *ngIf="isFormVisible">
+  <h2>{{ isEditing ? 'Modifier le rôle' : 'Créer un nouveau rôle' }}</h2>
+
+  <form (ngSubmit)="onSubmit()" #roleForm="ngForm">
+    <div class="form-group">
+      <label for="nom">Nom du rôle:</label>
+      <input id="nom" [(ngModel)]="role.nom" name="nom" class="form-control" required />
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success">{{ isEditing ? 'Modifier' : 'Créer' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()">Annuler</button>
+  </form>
+</div>

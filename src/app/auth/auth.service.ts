@@ -20,11 +20,16 @@ export class AuthService {
   // Connexion utilisateur avec email et mot de passe
   login(email: string, motDePasse: string): Observable<any> {
     return this.http
-      .post<{ token: string }>(`${this.apiUrl}/auth/login`, { email, motDePasse }) // Indiquez que vous attendez un objet avec un token
+      .post<{ token: string }>(`${this.apiUrl}/auth/login`, { email, motDePasse })
       .pipe(
-        tap((response) => {
-          if (response.token && isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('token', response.token); // Stocke le token uniquement dans le navigateur
+        tap({
+          next: (response) => {
+            if (response.token && isPlatformBrowser(this.platformId)) {
+              localStorage.setItem('token', response.token);
+            }
+          },
+          error: (error) => {
+            console.error('Erreur lors de la connexion:', error); // Log de l'erreur
           }
         })
       );
@@ -32,7 +37,9 @@ export class AuthService {
 
   // Vérifie si l'utilisateur est connecté
   isAuthenticated(): boolean {
-    return isPlatformBrowser(this.platformId) ? !!localStorage.getItem('token') : false; // Vérifie si l'utilisateur est authentifié
+    const token = isPlatformBrowser(this.platformId) ? localStorage.getItem('token') : null;
+    console.log('Token présent:', token); // Pour voir si le token est bien présent.
+    return !!token; //
   }
 
   // Déconnexion
