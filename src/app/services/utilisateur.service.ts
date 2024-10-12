@@ -1,55 +1,74 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {Utilisateur} from "../models/Utilisateur";
-import {Administrateur} from "../models/Administrateur";
-import {Dieteticien} from "../models/Dieteticien";
-import {UtilisateurSimple} from "../models/UtilisateurSimple";
-import {HttpClient} from "@angular/common/http";
+
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {AuthService} from "../auth/auth.service";
+import {environment} from "../environments/environment";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilisateurService {
 
+  private apiUrl = `${environment.apiUrl}/utilisateurs`;
 
-  private apiUrl = 'http://localhost:8080/api/utilisateurs';
+  constructor(private http: HttpClient, private authService: AuthService,) { }
 
-  constructor(private http: HttpClient) { }
-
-
-  creerAdministrateur(administrateur: Administrateur): Observable<Administrateur> {
-    return this.http.post<Administrateur>(`${this.apiUrl}/creer/administrateur`, administrateur);
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
   }
 
-  creerDieteticien(dieteticien: Dieteticien): Observable<Dieteticien> {
-    return this.http.post<Dieteticien>(`${this.apiUrl}/creer/dieteticien`, dieteticien);
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Erreur HTTP:', error);
+    return throwError('Une erreur est survenue, veuillez réessayer.');
   }
 
-  creerUtilisateurSimple(utilisateurSimple: UtilisateurSimple): Observable<UtilisateurSimple> {
-    return this.http.post<UtilisateurSimple>(`${this.apiUrl}/creer/utilisateur`, utilisateurSimple);
+  // Récupération de tous les utilisateurs
+  obtenirTousLesUtilisateurs(): Observable<Utilisateur[]> {
+    return this.http
+      .get<Utilisateur[]>(`${this.apiUrl}/liste`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
   }
 
-  modifierAdministrateur(id: number, administrateur: Administrateur): Observable<Administrateur> {
-    return this.http.put<Administrateur>(`${this.apiUrl}/modifier/administrateur/${id}`, administrateur);
+  obtenirUtilisateurParId(id: number): Observable<Utilisateur> {
+    return this.http
+      .get<Utilisateur>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
   }
 
-  modifierDieteticien(id: number, dieteticien: Dieteticien): Observable<Dieteticien> {
-    return this.http.put<Dieteticien>(`${this.apiUrl}/modifier/dieteticien/${id}`, dieteticien);
+  ajouterUtilisateur(utilisateur: Utilisateur, roleNom: string): Observable<Utilisateur> {
+    let endpoint = '';
+
+    // Definir el endpoint basado en el tipo de rol
+    if (roleNom === 'ADMIN') {
+      endpoint = '/ajouter/admin';
+    } else if (roleNom === 'DIETETICIEN') {
+      endpoint = '/ajouter/dieteticien';
+    } else {
+      endpoint = '/ajouter/utilisateur-simple';
+    }
+
+    //
+    const headers = this.authService.isAuthenticated() ? this.getAuthHeaders() : {};
+
+    return this.http.post<Utilisateur>(`${this.apiUrl}${endpoint}`, utilisateur, { headers })
+      .pipe(catchError(this.handleError));
   }
 
-  modifierUtilisateurSimple(id: number, utilisateurSimple: UtilisateurSimple): Observable<UtilisateurSimple> {
-    return this.http.put<UtilisateurSimple>(`${this.apiUrl}/modifier/utilisateur-simple/${id}`, utilisateurSimple);
+  mettreAJourUtilisateur(id: number, utilisateur: Utilisateur, roleNom: string): Observable<Utilisateur> {
+    return this.http.put<Utilisateur>(`${this.apiUrl}/utilisateurs/modifier/${id}`, utilisateur, { headers: this.getAuthHeaders() });
   }
+
 
   supprimerUtilisateur(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/utilisateurs/supprimer/${id}`, { headers: this.getAuthHeaders() });
   }
-
-  obtenirTousLesUtilisateurs(): Observable<Utilisateur[]> {
-    return this.http.get<Utilisateur[]>(this.apiUrl);
-
-  }
-
 
 
 }

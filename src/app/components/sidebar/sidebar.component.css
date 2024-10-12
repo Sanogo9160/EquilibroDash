@@ -1,0 +1,22 @@
+#sidebar {
+  background-color: #343a40;
+  min-width: 250px;
+  height: 100vh;
+  color: white;
+}
+
+.logo-sidebar {
+  max-width: 150px;
+  margin: 20px auto;
+}
+
+.nav-link {
+  padding: 15px;
+  color: white;
+  display: block;
+}
+
+.nav-link:hover {
+  background-color: #495057;
+  text-decoration: none;
+}

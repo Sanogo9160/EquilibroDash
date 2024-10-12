@@ -1,0 +1,25 @@
+<nav id="sidebar" class="bg-dark text-white">
+  <div class="text-center py-3">
+    <img src="assets/images/logo3.png" alt="Equilibro Logo" class="img-fluid logo-sidebar" />
+  </div>
+
+  <!-- Navigation items -->
+  <ul class="nav flex-column text-white">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard/accueil">
+        <i class="bi bi-speedometer2"></i> Accueil
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard/profils-sante">
+        <i class="bi bi-heart-pulse"></i> Profil de Santé
+      </a>
+    </li>
+    <!-- Ajoute les autres éléments de navigation ici -->
+    <li class="nav-item">
+      <button class="btn btn-link nav-link text-white" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Se Déconnecter
+      </button>
+    </li>
+  </ul>
+</nav>

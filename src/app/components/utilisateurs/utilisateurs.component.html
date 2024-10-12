@@ -1,25 +1,81 @@
-<h2>Liste des Utilisateurs</h2>
+<div *ngIf="!showAjouterUtilisateur">
+  <button (click)="toggleAjouterUtilisateur()" class="btn btn-primary">Ajouter un utilisateur</button>
 
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Nom</th>
-    <th>Email</th>
-    <th>Téléphone</th>
-    <th>Action</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let utilisateur of utilisateurs">
-    <td>{{ utilisateur.id }}</td>
-    <td>{{ utilisateur.nom }}</td>
-    <td>{{ utilisateur.email }}</td>
-    <td>{{ utilisateur.telephone }}</td>
-    <td>
-      <button (click)="modifierUtilisateur(utilisateur.id)">Modifier</button>
-      <button (click)="supprimerUtilisateur(utilisateur.id)">Supprimer</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+      <th>Rôle</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let utilisateur of utilisateurs">
+      <td>{{ utilisateur.id }}</td>
+      <td>{{ utilisateur.nom }}</td>
+      <td>{{ utilisateur.email }}</td>
+      <td>{{ utilisateur.telephone }}</td>
+      <td>{{ utilisateur.role.nom }}</td>
+      <td>
+        <button (click)="onEdit(utilisateur)" class="btn btn-warning btn-sm">Modifier</button>
+        <button (click)="onDelete(utilisateur.id!)" class="btn btn-danger btn-sm">Supprimer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="showAjouterUtilisateur" class="scrollable-form">
+  <form [formGroup]="utilisateurForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input id="nom" formControlName="nom" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="motDePasse">Mot de passe</label>
+      <input id="motDePasse" formControlName="motDePasse" type="password" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="telephone">Téléphone</label>
+      <input id="telephone" formControlName="telephone" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="age">Âge</label>
+      <input id="age" formControlName="age" type="number" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="sexe">Sexe</label>
+      <select id="sexe" formControlName="sexe" class="form-control" required>
+        <option value="Homme">Homme</option>
+        <option value="Femme">Femme</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Rôle</label>
+      <select id="role" formControlName="role" class="form-control" required>
+        <option *ngFor="let role of roles" [ngValue]="role">{{ role.nom }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="utilisateurForm.get('role')?.value?.nom === 'DIETETICIEN'" class="form-group">
+      <label for="specialite">Spécialité</label>
+      <input id="specialite" formControlName="specialite" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-success">Créer</button>
+    <button type="button" (click)="toggleAjouterUtilisateur()" class="btn btn-secondary">Annuler</button>
+  </form>
+</div>

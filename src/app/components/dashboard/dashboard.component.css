@@ -3,12 +3,22 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh; /* Full height */
-  width: 20.67%; /* 2/12th of the grid */
+  height: 100vh;
+  width: 20.67%;
   z-index: 100; /* Stay on top */
   overflow-y: auto; /* Scroll if necessary */
-  background-color: #20C997; /* Green background */
+  background-color: #00796b; /* Green background */
   padding-top: 1rem;
+}
+
+.nav-link i {
+  margin-right: 10px; /* Espace entre l'icône et le texte */
+  font-size: 18px; /* Taille des icônes */
+}
+
+.nav-link {
+  display: flex; /* Pour aligner les icônes et le texte sur une même ligne */
+  align-items: center; /* Centrer les éléments verticalement */
 }
 
 #sidebar .nav-link {
@@ -17,29 +27,31 @@
 }
 
 #sidebar .nav-link:hover {
-  background-color: #1e9e84; /* Darker green on hover */
+  background-color: #1e9e84;
 }
 
-/* Main content styling */
+
+/* Ajustement du main */
 main {
-  margin-left: 20.67%; /* Same width as the sidebar */
-  padding: 1.5rem; /* Add padding for breathing space */
-  min-height: calc(100vh - 70px); /* Ensure the main content takes full height minus the footer */
-  padding-bottom: 60px; /* Space for the footer */
-  background-color: #f8f9fa; /* Light background for the content */
+  height: calc(100vh - 56px); /* La hauteur totale du viewport moins la hauteur de la navbar (si 56px est la hauteur de ta navbar) */
+  margin-top: 56px; /* Si ta navbar a 56px de hauteur, ajuste ici en fonction de ta navbar */
+  overflow-y: auto; /* Ajout de scroll si le contenu dépasse */
+  padding: 20px; /* Pour ajouter un peu de padding */
 }
 
-/* Footer Styling */
+/* Footer  */
 .footer {
   position: fixed;
   bottom: 0;
-  left: 20.67%; /* Align with the content width */
-  width: 79.33%; /* Adjust footer to full width excluding sidebar */
-  background-color: #20C997;
+  left: 20.67%;
+  width: 79.33%;
+  background-color: #00796b;
   padding: 1rem;
   text-align: center;
-  z-index: 100;
+  z-index: 200;
+  color: white;
   border-top: 1px solid #e9ecef;
+
 }
 
 /* Optional: Style for the search bar and notification area */
@@ -53,3 +65,8 @@ main {
   right: 5px;
   border-radius: 50%;
 }
+
+
+
+
+

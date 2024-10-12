@@ -26,16 +26,12 @@ import {MatIcon} from "@angular/material/icon";
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
   email = '';
   motDePasse = '';
   errorMessage = '';
   loading = false;  // Propriété pour indiquer l'état de chargement
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
-
-  // Méthode appelée lors de la soumission du formulaire de connexion
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     this.loading = true;
@@ -53,12 +49,9 @@ export class LoginComponent {
           this.errorMessage = 'Erreur de connexion, veuillez réessayer.';
         }
         console.error('Erreur de connexion:', error);
-      },
+      }
     });
   }
 
-  goToCreateAccount() {
-    this.router.navigate(['/register']); // Redirige vers la page de création de compte
-  }
 
 }

@@ -41,4 +41,10 @@ export class ProfilDeSanteService {
   supprimerProfil(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`, { headers: this.getAuthHeaders() });
   }
+
+  // Fetch all profiles
+  obtenirTousLesProfils(): Observable<ProfilDeSante[]> {
+    return this.http.get<ProfilDeSante[]>(`${this.apiUrl}/liste`, { headers: this.getAuthHeaders() });
+  }
+
 }

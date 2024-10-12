@@ -7,7 +7,7 @@ import {AuthService} from "../../auth/auth.service";
   standalone: true,
   imports: [
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

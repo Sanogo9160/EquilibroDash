@@ -2,19 +2,20 @@ import {Role} from "./Role";
 import {ProfilDeSante} from "./ProfilDeSante";
 
 export interface Utilisateur {
-  id: number;
+  id?: number;
   nom: string;
   email: string;
   motDePasse: string;
   telephone: string;
-  poids: number;
-  taille: number;
-  age: number;
+  poids?: number;
+  taille?: number;
+  age?: number;
   sexe: string;
-  niveauActivite: string;
   role: Role;
-  profilDeSante: ProfilDeSante;
+  specialite?: string; // Optionnel, uniquement pour diététicien
+  //profilDeSante: ProfilDeSante;
 }
+
 
 
 
