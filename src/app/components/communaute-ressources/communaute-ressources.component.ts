@@ -1,4 +1,3 @@
-// communaute-ressources.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,9 +7,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Forum } from "../../models/Forum";
-import { Commentaire } from "../../models/Commentaire";
 import { ForumService } from "../../services/forum.service";
 import { CommentaireService } from "../../services/commentaire.service";
+import {VoirDiscussionComponent} from "../voir-discussion/voir-discussion.component";
+
 
 @Component({
   selector: 'app-communaute-ressources',
@@ -22,7 +22,8 @@ import { CommentaireService } from "../../services/commentaire.service";
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    VoirDiscussionComponent
   ],
   providers: [DatePipe],
   templateUrl: './communaute-ressources.component.html',
@@ -33,8 +34,6 @@ export class CommunauteRessourcesComponent implements OnInit {
   forums: Forum[] = [];
   nouveauForum: Forum = { nom: '', description: '', dateCreation: '' };
   selectedForum: Forum | null = null;
-  commentaires: Commentaire[] = [];
-  nouveauCommentaire: string = '';
 
   private datePipe = inject(DatePipe);
 
@@ -56,13 +55,11 @@ export class CommunauteRessourcesComponent implements OnInit {
 
   ajouterForum(): void {
     if (this.nouveauForum.nom && this.nouveauForum.description) {
-      // Format de date ISO avec le suffixe 'Z' pour correspondre à OffsetDateTime du backend
       this.nouveauForum.dateCreation = new Date().toISOString();
-
       this.forumService.creerForum(this.nouveauForum).subscribe({
         next: (forum) => {
           this.forums.push(forum);
-          this.nouveauForum = { nom: '', description: '', dateCreation: '' }; // Réinitialiser le formulaire
+          this.nouveauForum = { nom: '', description: '', dateCreation: '' };
           this.afficherListe = true;
         },
         error: (err) => {
@@ -81,29 +78,22 @@ export class CommunauteRessourcesComponent implements OnInit {
 
   afficherCommentaires(forum: Forum): void {
     this.selectedForum = forum;
-    if (forum.id !== undefined) {
-      this.commentaireService.listerCommentaires(forum.id).subscribe({
-        next: (data) => this.commentaires = data,
-        error: (err) => console.error('Erreur lors du chargement des commentaires:', err)
-      });
-    } else {
-      console.error('L\'ID du forum est undefined');
-    }
+    this.afficherListe = false;
   }
 
-  ajouterCommentaire(): void {
-    if (this.nouveauCommentaire && this.selectedForum && this.selectedForum.id !== undefined) {
-      const commentaire: Commentaire = {
-        contenu: this.nouveauCommentaire,
-        dateCreation: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || ''
-      };
-      this.commentaireService.ajouterCommentaire(this.selectedForum.id, commentaire).subscribe({
-        next: (commentaireAjoute) => {
-          this.commentaires.push(commentaireAjoute);
-          this.nouveauCommentaire = '';
-        },
-        error: (err) => console.error('Erreur lors de l\'ajout du commentaire:', err)
-      });
+  retourListe(): void {
+    this.selectedForum = null;
+    this.afficherListe = true;
+  }
+
+  modifierForum(forum: Forum): void {
+    // Logique de modification
+  }
+
+  confirmerSuppressionForum(forum: Forum): void {
+    const confirmation = window.confirm('Voulez-vous vraiment supprimer ce forum ?');
+    if (confirmation && forum.id !== undefined) {
+      this.supprimerForum(forum);
     }
   }
 
@@ -118,9 +108,5 @@ export class CommunauteRessourcesComponent implements OnInit {
     } else {
       console.error('L\'ID du forum à supprimer est undefined');
     }
-  }
-
-  modifierForum(forum: Forum): void {
-    // Logic for modifying forum
   }
 }

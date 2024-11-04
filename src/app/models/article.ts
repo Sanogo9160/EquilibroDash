@@ -1,5 +1,5 @@
 export interface Article {
-  id?: number;
+  id: number;
   titre: string;
   contenu: string;
   videoUrl?: string;

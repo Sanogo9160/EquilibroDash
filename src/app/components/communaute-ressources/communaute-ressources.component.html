@@ -1,12 +1,17 @@
 <div class="forums-container">
   <div class="header">
-    <h2>Liste des Forums</h2>
-    <button mat-raised-button color="primary" (click)="toggleFormVisible()" class="rectangular-button wide-button teal-button">
+    <h2 *ngIf="!selectedForum">Liste des Forums</h2>
+    <button *ngIf="!selectedForum" mat-raised-button color="primary" (click)="toggleFormVisible()" class="rectangular-button wide-button teal-button">
       <mat-icon>add</mat-icon> Ajouter un Forum
+    </button>
+    <!-- Bouton retour pour revenir à la liste des forums -->
+    <button *ngIf="selectedForum" mat-raised-button color="primary" (click)="retourListe()" class="rectangular-button wide-button teal-button">
+      <mat-icon>arrow_back</mat-icon> Retour à la Liste des Forums
     </button>
   </div>
 
-  <div *ngIf="!afficherListe" class="ajouter-forum-form">
+  <!-- Formulaire d'ajout de forum -->
+  <div *ngIf="!afficherListe && !selectedForum" class="ajouter-forum-form">
     <mat-card>
       <mat-card-title>Ajouter un Nouveau Forum</mat-card-title>
       <form (ngSubmit)="ajouterForum()">
@@ -30,7 +35,8 @@
     </mat-card>
   </div>
 
-  <div class="forum-list" *ngIf="afficherListe">
+  <!-- Liste des forums -->
+  <div class="forum-list" *ngIf="afficherListe && !selectedForum">
     <mat-card *ngFor="let forum of forums" class="forum-item">
       <mat-card-header>
         <mat-card-title>{{ forum.nom }}</mat-card-title>
@@ -40,32 +46,26 @@
         <p>{{ forum.description }}</p>
         <small>Date de création : {{ forum.dateCreation | date:'short' }}</small>
       </mat-card-content>
+
       <mat-card-actions>
-        <button mat-icon-button color="teal" (click)="modifierForum(forum)">
+        <!-- Bouton Modifier avec infobulle -->
+        <button mat-icon-button color="primary" matTooltip="Modifier" class="teal-button" (click)="modifierForum(forum)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="teal" (click)="afficherCommentaires(forum)">
+
+        <!-- Bouton Afficher commentaires avec infobulle -->
+        <button mat-icon-button color="primary" matTooltip="Voir les commentaires" (click)="afficherCommentaires(forum)">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="supprimerForum(forum)">
+
+        <!-- Bouton Supprimer avec confirmation et infobulle -->
+        <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="confirmerSuppressionForum(forum)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-card-actions>
     </mat-card>
   </div>
 
-  <div *ngIf="selectedForum" class="comments-section">
-    <h3>Commentaires pour {{ selectedForum.nom }}</h3>
-    <div *ngFor="let commentaire of commentaires" class="comment-item">
-      <p>{{ commentaire.contenu }}</p>
-      <small>Posté le : {{ commentaire.dateCreation | date:'short' }}</small>
-    </div>
-    <form (ngSubmit)="ajouterCommentaire()">
-      <mat-form-field appearance="fill">
-        <mat-label>Ajouter un commentaire</mat-label>
-        <textarea matInput [(ngModel)]="nouveauCommentaire" name="commentaire" required></textarea>
-      </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Envoyer</button>
-    </form>
-  </div>
+  <!-- Afficher VoirDiscussionComponent pour le forum sélectionné -->
+  <app-voir-discussion *ngIf="selectedForum" [forum]="selectedForum"></app-voir-discussion>
 </div>

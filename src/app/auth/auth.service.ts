@@ -58,4 +58,9 @@ export class AuthService {
     });
   }
 
+  // La méthode pour obtenir l'utilisateur actuel
+  obtenirUtilisateurActuel(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/utilisateurs/current`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
 }

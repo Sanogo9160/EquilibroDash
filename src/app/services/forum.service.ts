@@ -62,7 +62,6 @@ export class ForumService {
       .pipe(catchError(this.handleError));
   }
 
-  // Autres méthodes CRUD...
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error('Erreur lors de la récupération des forums:', error);

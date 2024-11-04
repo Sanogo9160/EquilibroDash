@@ -1,19 +1,65 @@
 <div class="container">
-  <h1>Liste des Articles</h1>
-  <button class="btn btn-primary" (click)="addArticle()">Ajouter un Article</button>
+  <h1 *ngIf="!formVisible">Liste des Articles</h1>
 
-  <div *ngIf="loading">Chargement des articles...</div>
+  <!-- Bouton pour ajouter un nouvel article avec une icône -->
+  <button *ngIf="!formVisible" mat-raised-button color="primary" (click)="ajouterArticle()">
+    <mat-icon>add</mat-icon> Ajouter un Article
+  </button>
 
-  <div *ngIf="!loading && articles.length === 0">Aucun article trouvé.</div>
+  <!-- Formulaire d'ajout d'article -->
+  <div *ngIf="formVisible" class="form-container">
+    <form [formGroup]="articleForm" (ngSubmit)="soumettreArticle()">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Titre</mat-label>
+        <input matInput formControlName="titre" required>
+      </mat-form-field>
 
-  <ul *ngIf="!loading && articles.length > 0">
-    <li *ngFor="let article of articles">
-      <h2>{{ article.titre }}</h2>
-      <p>{{ article.contenu }}</p>
-      <video *ngIf="article.videoUrl" controls>
-        <source [src]="article.videoUrl" type="video/mp4">
-        Votre navigateur ne prend pas en charge la lecture de vidéos.
-      </video>
-    </li>
-  </ul>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Contenu</mat-label>
+        <textarea matInput formControlName="contenu" required></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>URL de la vidéo</mat-label>
+        <input matInput formControlName="videoUrl">
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="accent" type="submit" [disabled]="articleForm.invalid">Soumettre</button>
+        <button mat-button color="warn" type="button" (click)="annulerAjout()">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Messages de chargement ou d'absence d'articles, masqués si le formulaire est visible -->
+  <div *ngIf="!formVisible">
+    <div *ngIf="loading">Chargement des articles...</div>
+    <div *ngIf="!loading && articles.length === 0">Aucun article trouvé.</div>
+
+    <!-- Liste des articles avec une hauteur maximale et défilement interne -->
+    <div *ngIf="!loading && articles.length > 0" class="articles-container">
+      <mat-card *ngFor="let article of articles" class="article-card">
+        <mat-card-header>
+          <mat-card-title>{{ article.titre }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ article.contenu }}</p>
+          <div *ngIf="article.videoUrl">
+            <a [href]="article.videoUrl" target="_blank" rel="noopener noreferrer">
+              Voir la vidéo
+            </a>
+          </div>
+          <!-- Icônes d'édition et de suppression -->
+          <div class="icon-container">
+            <button mat-icon-button color="accent" (click)="modifierArticle(article.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="supprimerArticle(article.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>

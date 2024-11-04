@@ -1,0 +1,48 @@
+<div *ngIf="forum" class="forum-detail-container">
+  <h2>{{ forum.nom }}</h2>
+  <p>{{ forum.description }}</p>
+
+  <!-- Liste des commentaires sous forme de discussion -->
+  <div class="comment-list">
+    <div *ngFor="let commentaire of commentaires; let i = index" class="comment-item">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            Par {{ commentaire.auteur?.nom }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ commentaire.dateCreation | date:'short' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ expandedComments[i] ? commentaire.contenu : (commentaire.contenu | slice:0:100) + '...' }}</p>
+          <button mat-button *ngIf="!expandedComments[i] && commentaire.contenu.length > 100"
+                  (click)="expandComment(i)">Voir plus</button>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="primary" (click)="editComment(commentaire)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="confirmDeleteComment(commentaire)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Bouton pour ajouter un commentaire -->
+  <button mat-raised-button color="primary" (click)="toggleCommentForm()">
+    <mat-icon>add</mat-icon> Ajouter commentaire
+  </button>
+
+  <!-- Formulaire d'ajout de commentaire -->
+  <form *ngIf="showCommentForm" (ngSubmit)="addComment()">
+    <mat-form-field appearance="fill">
+      <mat-label>Ajouter un commentaire</mat-label>
+      <textarea matInput [(ngModel)]="newCommentContent" name="commentaire" required></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Envoyer</button>
+    <button mat-button color="warn" (click)="toggleCommentForm()">Annuler</button> <!-- Option pour annuler -->
+  </form>
+</div>

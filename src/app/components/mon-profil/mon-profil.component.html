@@ -1,1 +1,43 @@
-<p>mon-profil works!</p>
+<div class="container">
+  <div class="header">
+    <h2>Informations Personnelles</h2>
+  </div>
+  <div *ngIf="utilisateur; else errorTemplate">
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" value="{{ utilisateur.nom }}" disabled>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" value="{{ utilisateur.email }}" disabled>
+    </div>
+    <div class="form-group inline">
+      <div>
+        <label for="telephone">Téléphone</label>
+        <input type="tel" id="telephone" value="{{ utilisateur.telephone }}" disabled>
+      </div>
+      <div>
+        <label for="sexe">Sexe</label>
+        <input type="text" id="sexe" value="{{ utilisateur.sexe }}" disabled>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" value="●●●●●●●●●●" disabled>
+    </div>
+  </div>
+  <ng-template #errorTemplate>
+    <p>{{ erreur }}</p>
+  </ng-template>
+
+  <div class="actions">
+    <button class="modify">
+      <fa-icon [icon]="faEdit" class="icon"></fa-icon> Modifier
+    </button>
+    <button class="quit" (click)="quitter()">
+      <fa-icon [icon]="faSignOutAlt" class="icon"></fa-icon> Quitter
+    </button>
+
+  </div>
+
+</div>

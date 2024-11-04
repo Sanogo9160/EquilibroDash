@@ -4,27 +4,45 @@
   padding: 20px;
 }
 
-h1 {
-  text-align: center;
+mat-form-field.full-width {
+  width: 100%; /* Assurez-vous que les champs de formulaire remplissent la largeur */
+  margin-bottom: 20px; /* Ajoutez de l'espace entre les champs */
 }
 
-.btn {
+button[mat-raised-button],
+button[mat-button] {
+  border-radius: 4px; /* Coins arrondis pour les boutons */
+  padding: 12px 20px; /* Augmentez le padding pour élargir les boutons */
+  margin-top: 10px; /* Ajoutez un espacement entre les boutons */
+
+}
+
+/* Style spécifique au bouton "Ajouter un Article" pour garder sa largeur inchangée */
+.container button {
+  width: auto; /* Permet au bouton d'avoir une largeur automatique */
+}
+
+.form-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+mat-card.article-card {
   margin-bottom: 20px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+mat-card-title {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-li {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
 
-video {
-  max-width: 100%;
-  margin-top: 10px;
+button[mat-raised-button] {
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: teal;
+  color: white;
+  margin-bottom: 20px;
 }

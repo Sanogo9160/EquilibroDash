@@ -1,0 +1,73 @@
+.dashboard-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stats-section, .reports-section, .virtues-section {
+  background-color: #f7f7f7;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.stat-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 12px;
+}
+
+.mat-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+h2 {
+  color: #2d6a4f;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.report-card {
+  padding: 20px;
+  text-align: center;
+}
+
+.charts {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.chart {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #e8eaf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.virtues-section .virtue-card {
+  text-align: center;
+}
+
+.virtue-card img {
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.mat-card-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.stat-card-content mat-icon {
+  color: #00796b;
+}

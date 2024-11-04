@@ -1,1 +1,31 @@
-<p>acceuil works!</p>
+<div class="dashboard-container">
+  <!-- Section des statistiques -->
+  <section class="stats-section" *ngIf="statsData.length">
+    <mat-grid-list cols="3" rowHeight="150px" gutterSize="16px">
+      <mat-grid-tile *ngFor="let stat of statsData" class="stat-card" colspan="1" rowspan="1">
+        <mat-card class="stat-card-content">
+          <mat-card-header>
+            <mat-icon color="accent">{{ stat.icon }}</mat-icon>
+            <mat-card-title>{{ stat.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>{{ stat.value }}</h2>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </section>
+
+  <!-- Section des rapports graphiques -->
+  <section class="reports-section">
+    <mat-card class="report-card">
+      <h3>Statistique et Rapport</h3>
+      <div class="charts">
+        <!-- Placeholder pour les graphiques -->
+        <div class="chart">Graphique Total Order</div>
+        <div class="chart">Graphique Customer Growth</div>
+        <div class="chart">Graphique Total Revenue</div>
+      </div>
+    </mat-card>
+  </section>
+</div>
