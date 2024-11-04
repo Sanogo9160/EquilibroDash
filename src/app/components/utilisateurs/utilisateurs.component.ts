@@ -3,6 +3,7 @@ import {Utilisateur} from "../../models/Utilisateur";
 import {UtilisateurService} from "../../services/utilisateur.service";
 import {CommonModule} from "@angular/common";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Role} from "../../models/Role";
 import {RoleService} from "../../services/role.service";
@@ -93,7 +94,7 @@ export class UtilisateursComponent implements OnInit{
     }
     specialiteControl?.updateValueAndValidity();
   }
-
+/*
   onSubmit(): void {
     const role = this.utilisateurForm.value.role.nom;
 
@@ -109,21 +110,71 @@ export class UtilisateursComponent implements OnInit{
     });
   }
 
+ */
+  onSubmit(): void {
+    const role = this.utilisateurForm.value.role.nom;
+
+    // Check if we are in edit mode or add mode
+    if (this.utilisateurToEdit) {
+      // Update existing user
+      if (this.utilisateurToEdit.id !== undefined) {
+        this.utilisateurService.mettreAJourUtilisateur(this.utilisateurToEdit.id, this.utilisateurForm.value).subscribe({
+          next: () => {
+            console.log('Utilisateur modifié avec succès');
+            this.router.navigate(['/utilisateurs']);
+          },
+          error: (err) => {
+            console.error('Erreur lors de la modification de l\'utilisateur:', err);
+            alert('Une erreur est survenue, veuillez réessayer.');
+          }
+        });
+      } else {
+        console.error('ID de l\'utilisateur à modifier est manquant.');
+      }
+    } else {
+      // Add new user
+      this.utilisateurService.ajouterUtilisateur(this.utilisateurForm.value, role).subscribe({
+        next: () => {
+          console.log('Utilisateur créé avec succès');
+          this.router.navigate(['/utilisateurs']);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la création de l\'utilisateur:', err);
+          alert('Une erreur est survenue, veuillez réessayer.');
+        }
+      });
+    }
+  }
+
   toggleAjouterUtilisateur(): void {
     this.showAjouterUtilisateur = !this.showAjouterUtilisateur;
   }
 
   onEdit(utilisateur: Utilisateur): void {
     this.utilisateurToEdit = utilisateur;
-    this.utilisateurForm.patchValue(utilisateur);
+    this.utilisateurForm.patchValue({
+      nom: utilisateur.nom,
+      email: utilisateur.email,
+      motDePasse: '',  // Ne jamais pré-remplir le mot de passe
+      telephone: utilisateur.telephone,
+      poids: utilisateur.poids,
+      taille: utilisateur.taille,
+      age: utilisateur.age,
+      sexe: utilisateur.sexe,
+      role: utilisateur.role,
+      specialite: utilisateur.specialite
+    });
     this.showAjouterUtilisateur = true;
   }
 
   onDelete(id: number): void {
-    this.utilisateurService.supprimerUtilisateur(id).subscribe(() => {
-      this.chargerUtilisateurs();
-    });
+    const confirmDeletion = confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');
+    if (confirmDeletion) {
+      this.utilisateurService.supprimerUtilisateur(id).subscribe(() => {
+        this.chargerUtilisateurs();
+      });
+    }
   }
 
-}
 
+}

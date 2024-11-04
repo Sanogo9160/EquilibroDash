@@ -36,16 +36,18 @@ export class UtilisateurService {
       .pipe(catchError(this.handleError));
   }
 
+  // Récupérer un utilisateur par ID
   obtenirUtilisateurParId(id: number): Observable<Utilisateur> {
     return this.http
-      .get<Utilisateur>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
+      .get<Utilisateur>(`${this.apiUrl}/obtenir/${id}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 
+  // Ajouter un utilisateur en fonction de son rôle
   ajouterUtilisateur(utilisateur: Utilisateur, roleNom: string): Observable<Utilisateur> {
     let endpoint = '';
 
-    // Definir el endpoint basado en el tipo de rol
+    // Définir l'endpoint en fonction du rôle
     if (roleNom === 'ADMIN') {
       endpoint = '/ajouter/admin';
     } else if (roleNom === 'DIETETICIEN') {
@@ -54,21 +56,20 @@ export class UtilisateurService {
       endpoint = '/ajouter/utilisateur-simple';
     }
 
-    //
-    const headers = this.authService.isAuthenticated() ? this.getAuthHeaders() : {};
-
-    return this.http.post<Utilisateur>(`${this.apiUrl}${endpoint}`, utilisateur, { headers })
+    return this.http.post<Utilisateur>(`${this.apiUrl}${endpoint}`, utilisateur, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 
-  mettreAJourUtilisateur(id: number, utilisateur: Utilisateur, roleNom: string): Observable<Utilisateur> {
-    return this.http.put<Utilisateur>(`${this.apiUrl}/utilisateurs/modifier/${id}`, utilisateur, { headers: this.getAuthHeaders() });
+  // Mettre à jour un utilisateur
+  mettreAJourUtilisateur(id: number, utilisateur: Utilisateur): Observable<Utilisateur> {
+    return this.http.put<Utilisateur>(`${this.apiUrl}/modifier/${id}`, utilisateur, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
   }
 
-
+  // Supprimer un utilisateur
   supprimerUtilisateur(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/utilisateurs/supprimer/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
   }
-
 
 }

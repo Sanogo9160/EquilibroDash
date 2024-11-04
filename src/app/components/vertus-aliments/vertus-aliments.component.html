@@ -1,1 +1,19 @@
-<p>vertus-aliments works!</p>
+<div class="container">
+  <h1>Liste des Articles</h1>
+  <button class="btn btn-primary" (click)="addArticle()">Ajouter un Article</button>
+
+  <div *ngIf="loading">Chargement des articles...</div>
+
+  <div *ngIf="!loading && articles.length === 0">Aucun article trouvé.</div>
+
+  <ul *ngIf="!loading && articles.length > 0">
+    <li *ngFor="let article of articles">
+      <h2>{{ article.titre }}</h2>
+      <p>{{ article.contenu }}</p>
+      <video *ngIf="article.videoUrl" controls>
+        <source [src]="article.videoUrl" type="video/mp4">
+        Votre navigateur ne prend pas en charge la lecture de vidéos.
+      </video>
+    </li>
+  </ul>
+</div>

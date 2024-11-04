@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {catchError, Observable, throwError} from "rxjs";
 import {ProfilDeSante} from "../models/ProfilDeSante";
 import {environment} from "../environments/environment";
 
@@ -9,42 +9,53 @@ import {environment} from "../environments/environment";
 })
 export class ProfilDeSanteService {
 
-  private apiUrl = `${environment.apiUrl}/profils`;  // URL base du backend
+  private apiUrl = `${environment.apiUrl}/profils-de-sante`;  // URL base du backend
 
   constructor(private http: HttpClient) {}
 
   // Headers avec le token
+
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');  // Récupération du token
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Aucun token trouvé dans le localStorage !');
+      throw new Error('L\'utilisateur n\'est pas authentifié');
+    }
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     });
   }
 
-  // Créer un profil
-  creerProfil(profil: ProfilDeSante): Observable<ProfilDeSante> {
-    return this.http.post<ProfilDeSante>(`${this.apiUrl}/creer`, profil, { headers: this.getAuthHeaders() });
-  }
-
-  // Obtenir un profil par ID
-  obtenirProfilParId(id: number): Observable<ProfilDeSante> {
-    return this.http.get<ProfilDeSante>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
-  }
-
-  // Modifier un profil
-  modifierProfil(id: number | undefined, profil: ProfilDeSante): Observable<ProfilDeSante> {
-    return this.http.put<ProfilDeSante>(`${this.apiUrl}/modifier/${id}`, profil, { headers: this.getAuthHeaders() });
-  }
-
-  // Supprimer un profil
-  supprimerProfil(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`, { headers: this.getAuthHeaders() });
-  }
-
-  // Fetch all profiles
   obtenirTousLesProfils(): Observable<ProfilDeSante[]> {
-    return this.http.get<ProfilDeSante[]>(`${this.apiUrl}/liste`, { headers: this.getAuthHeaders() });
+    const headers = this.getAuthHeaders();
+    return this.http.get<ProfilDeSante[]>(`${this.apiUrl}/liste`, { headers })
+      .pipe(
+        catchError(this.handleError)  // Gestion des erreurs
+      );
   }
 
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Erreur lors de la récupération des profils:', error);
+    return throwError('Une erreur est survenue, veuillez réessayer plus tard.');
+  }
+
+
+  // Ajouter un nouveau profil de santé
+  ajouterProfil(profil: ProfilDeSante): Observable<ProfilDeSante> {
+    const headers = this.getAuthHeaders();  // Ajouter les headers d'authentification
+    return this.http.post<ProfilDeSante>(`${this.apiUrl}/ajouter`, profil, { headers });
+  }
+
+  // Mettre à jour un profil de santé
+  mettreAJourProfil(id: number | undefined, profil: ProfilDeSante): Observable<ProfilDeSante> {
+    const headers = this.getAuthHeaders();  // Ajouter les headers d'authentification
+    return this.http.put<ProfilDeSante>(`${this.apiUrl}/mettreAJour/${id}`, profil, { headers });
+  }
+
+  // Supprimer un profil de santé
+  supprimerProfil(id: number): Observable<void> {
+    const headers = this.getAuthHeaders();  // Ajouter les headers d'authentification
+    return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`, { headers });
+  }
 }

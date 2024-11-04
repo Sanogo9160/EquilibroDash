@@ -1,48 +1,41 @@
-import { Component } from '@angular/core';
-import {MatTable} from "@angular/material/table";
+import {Component, OnInit} from '@angular/core';
+import {MatTable, MatTableModule} from "@angular/material/table";
 import {ProfilDeSanteService} from "../../services/profil-de-sante.service";
 import {ProfilDeSante} from "../../models/ProfilDeSante";
 import {CommonModule} from "@angular/common";
+import {MatDialog} from "@angular/material/dialog";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatIcon} from "@angular/material/icon";
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {DialogModifierProfilComponent} from "../dialog-modifier-profil/dialog-modifier-profil.component";
+import {MatButtonModule} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
   selector: 'app-profil-sante',
   standalone: true,
   imports: [
-    MatTable, CommonModule
+    MatTable, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule
   ],
   templateUrl: './profil-sante.component.html',
   styleUrl: './profil-sante.component.css'
 })
-export class ProfilSanteComponent {
+export class ProfilSanteComponent implements OnInit {
 
-  profilsDeSante: ProfilDeSante[] = [];
-  displayedColumns: string[] = ['id', 'utilisateur', 'objectifs', 'allergies', 'actions'];
+  profils: ProfilDeSante[] = [];
 
-  constructor(private profilDeSanteService: ProfilDeSanteService) { }
+  displayedColumns: string[] = ['nom', 'email', 'objectifs', 'allergies', 'maladies', 'preferences'];
+
+  constructor(private profilDeSanteService: ProfilDeSanteService) {}
 
   ngOnInit(): void {
-    this.fetchProfils();
+    this.chargerProfils();
   }
 
-  fetchProfils(): void {
-    this.profilDeSanteService.obtenirTousLesProfils()
-      .subscribe((data: ProfilDeSante[]) => {
-        this.profilsDeSante = data;
-      });
+  chargerProfils(): void {
+    this.profilDeSanteService.obtenirTousLesProfils().subscribe((data) => {
+      this.profils = data;
+    });
   }
-
-  onEdit(profil: ProfilDeSante): void {
-    // Navigate to edit page or open edit modal
-    console.log('Edit profile', profil);
-  }
-
-  onDelete(id: number): void {
-    if (confirm('Are you sure you want to delete this profile?')) {
-      this.profilDeSanteService.supprimerProfil(id)
-        .subscribe(() => {
-          this.fetchProfils(); // Refresh the list after deletion
-        });
-    }
-  }
-
 }

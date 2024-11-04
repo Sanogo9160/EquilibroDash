@@ -1,50 +1,63 @@
 <div class="container">
-  <h2>Liste de Profile Santé </h2>
+  <h2>Liste des Profils de Santé</h2>
 
-  <table mat-table [dataSource]="profilsDeSante" class="mat-elevation-z8">
+  <table mat-table [dataSource]="profils" class="mat-elevation-z8" multiTemplateDataRows style="width: 100%;">
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let profil"> {{ profil.id }} </td>
+    <!-- Colonne Nom -->
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Nom </th>
+      <td mat-cell *matCellDef="let profil" style="width: 20%;"> {{ profil.utilisateur.nom }} </td>
     </ng-container>
 
-    <!-- User Column -->
-    <ng-container matColumnDef="utilisateur">
-      <th mat-header-cell *matHeaderCellDef> User </th>
-      <td mat-cell *matCellDef="let profil"> {{ profil.utilisateur.email }} </td>
+    <!-- Colonne Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Email </th>
+      <td mat-cell *matCellDef="let profil" style="width: 20%;"> {{ profil.utilisateur.email }} </td>
     </ng-container>
 
-    <!-- Objectives Column -->
+    <!-- Colonne Objectifs de Santé -->
     <ng-container matColumnDef="objectifs">
-      <th mat-header-cell *matHeaderCellDef> Objectives </th>
-      <td mat-cell *matCellDef="let profil">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Objectifs de Santé </th>
+      <td mat-cell *matCellDef="let profil" style="width: 20%;">
         <ul>
-          <li *ngFor="let objectif of profil.objectifsSante">{{ objectif.type }}</li>
+          <li *ngFor="let objectif of profil.objectifs">{{ objectif.nom }}: {{ objectif.description }}</li>
         </ul>
       </td>
     </ng-container>
 
-    <!-- Allergies Column -->
+    <!-- Colonne Allergies -->
     <ng-container matColumnDef="allergies">
-      <th mat-header-cell *matHeaderCellDef> Allergies </th>
-      <td mat-cell *matCellDef="let profil">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Allergies </th>
+      <td mat-cell *matCellDef="let profil" style="width: 20%;">
         <ul>
-          <li *ngFor="let allergie of profil.allergies">{{ allergie.typeAllergie }}</li>
+          <li *ngFor="let allergie of profil.allergies">{{ allergie.nom }}: {{ allergie.description }}</li>
         </ul>
       </td>
     </ng-container>
 
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let profil">
-        <button mat-button color="primary" (click)="onEdit(profil)">Edit</button>
-        <button mat-button color="warn" (click)="onDelete(profil.id)">Delete</button>
+    <!-- Colonne Maladies -->
+    <ng-container matColumnDef="maladies">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Maladies </th>
+      <td mat-cell *matCellDef="let profil" style="width: 20%;">
+        <ul>
+          <li *ngFor="let maladie of profil.maladies">{{ maladie.nom }}: {{ maladie.description }}</li>
+        </ul>
       </td>
     </ng-container>
 
+    <!-- Colonne Préférences Alimentaires -->
+    <ng-container matColumnDef="preferences">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Préférences Alimentaires </th>
+      <td mat-cell *matCellDef="let profil" style="width: 20%;">
+        <ul>
+          <li *ngFor="let preference of profil.preferencesAlimentaires">{{ preference.nom }}: {{ preference.description }}</li>
+        </ul>
+      </td>
+    </ng-container>
+
+    <!-- Header et lignes du tableau -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
   </table>
 </div>
