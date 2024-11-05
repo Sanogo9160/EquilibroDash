@@ -1,13 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {Utilisateur} from "../../models/Utilisateur";
-import {UtilisateurService} from "../../services/utilisateur.service";
-import {CommonModule} from "@angular/common";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Role} from "../../models/Role";
-import {RoleService} from "../../services/role.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit, signal } from '@angular/core';
+import { Utilisateur } from "../../models/Utilisateur";
+import { UtilisateurService } from "../../services/utilisateur.service";
+import { CommonModule } from "@angular/common";
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Role } from "../../models/Role";
+import { RoleService } from "../../services/role.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'app-utilisateurs',
@@ -18,15 +17,16 @@ import {ActivatedRoute, Router} from "@angular/router";
     ReactiveFormsModule
   ],
   templateUrl: './utilisateurs.component.html',
-  styleUrl: './utilisateurs.component.css'
+  styleUrls: ['./utilisateurs.component.css']
 })
-export class UtilisateursComponent implements OnInit{
+export class UtilisateursComponent implements OnInit {
 
   utilisateurs: Utilisateur[] = [];
   roles: Role[] = [];
   utilisateurForm!: FormGroup;
   showAjouterUtilisateur = false;
   utilisateurToEdit?: Utilisateur;
+  errorMessage = signal<string | null>(null);
 
   constructor(
     private utilisateurService: UtilisateurService,
@@ -39,8 +39,8 @@ export class UtilisateursComponent implements OnInit{
   ngOnInit(): void {
     this.chargerUtilisateurs();
     this.chargerRoles();
+    this.initForm();
 
-    // Récupérer l'utilisateur par ID si paramètre 'id' dans l'URL
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -51,103 +51,98 @@ export class UtilisateursComponent implements OnInit{
         });
       }
     });
+  }
 
-    // Initialisation du formulaire avec validateurs
+  initForm(): void {
     this.utilisateurForm = this.fb.nonNullable.group({
       nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       motDePasse: ['', Validators.required],
       telephone: ['', Validators.required],
-      poids: [''],
-      taille: [''],
+      poids: ['', Validators.required],
+      taille: ['', Validators.required],
       age: [0, Validators.required],
       sexe: ['', Validators.required],
       role: [null as Role | null, Validators.required],
-      specialite: [''],
+      specialite: ['']  // Optionnel, utilisé uniquement pour les diététiciens
     });
 
-    // Gestion dynamique de la validation du champ 'specialite'
+    // Gestion dynamique de la validation du champ `specialite` en fonction du rôle
     this.utilisateurForm.get('role')?.valueChanges.subscribe(role => {
-      if (role) this.gestionValidationDesChamps(role);
+      this.gestionValidationDesChamps(role);
     });
   }
 
   chargerUtilisateurs(): void {
-    this.utilisateurService.obtenirTousLesUtilisateurs().subscribe(data => {
-      this.utilisateurs = data;
+    this.utilisateurService.obtenirTousLesUtilisateurs().subscribe({
+      next: (data) => this.utilisateurs = data,
+      error: () => this.errorMessage.set("Erreur lors de la récupération des utilisateurs")
     });
   }
 
   chargerRoles(): void {
-    this.roleService.listerRoles().subscribe(data => {
-      this.roles = data;
+    this.roleService.listerRoles().subscribe({
+      next: (data) => this.roles = data,
+      error: () => this.errorMessage.set("Erreur lors de la récupération des rôles")
     });
   }
 
   gestionValidationDesChamps(role: Role): void {
     const specialiteControl = this.utilisateurForm.get('specialite');
-
     if (role?.nom === 'DIETETICIEN') {
       specialiteControl?.setValidators([Validators.required]);
     } else {
       specialiteControl?.clearValidators();
+      specialiteControl?.setValue(''); // Efface `specialite` si le rôle n'est pas diététicien
     }
     specialiteControl?.updateValueAndValidity();
   }
-/*
-  onSubmit(): void {
-    const role = this.utilisateurForm.value.role.nom;
 
-    this.utilisateurService.ajouterUtilisateur(this.utilisateurForm.value, role).subscribe({
+  onSubmit(): void {
+    if (!this.utilisateurForm.valid) {
+      alert("Veuillez remplir tous les champs requis.");
+      return;
+    }
+
+    // Création de `utilisateurData` avec uniquement les champs nécessaires
+    const utilisateurData: any = {
+      nom: this.utilisateurForm.value.nom,
+      email: this.utilisateurForm.value.email,
+      motDePasse: this.utilisateurForm.value.motDePasse,
+      telephone: this.utilisateurForm.value.telephone,
+      poids: this.utilisateurForm.value.poids,
+      taille: this.utilisateurForm.value.taille,
+      age: this.utilisateurForm.value.age,
+      sexe: this.utilisateurForm.value.sexe,
+      role: { id: this.utilisateurForm.value.role.id }
+    };
+
+    // Ajout conditionnel de `specialite` si le rôle est diététicien
+    if (this.utilisateurForm.value.role?.nom === 'DIETETICIEN') {
+      utilisateurData.specialite = this.utilisateurForm.value.specialite;
+    }
+
+    console.log('Données envoyées au backend :', utilisateurData); // Vérification des données sans `specialite` si non requise
+
+    this.utilisateurService.ajouterUtilisateur(utilisateurData).subscribe({
       next: () => {
         console.log('Utilisateur créé avec succès');
-        this.router.navigate(['/utilisateurs']);
+        this.chargerUtilisateurs(); // Rafraîchir la liste des utilisateurs
+        this.toggleAjouterUtilisateur(); // Cacher le formulaire
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erreur lors de la création de l\'utilisateur:', err);
-        alert('Une erreur est survenue, veuillez réessayer.');
+        this.errorMessage.set("Erreur lors de la création de l'utilisateur");
       }
     });
   }
 
- */
-  onSubmit(): void {
-    const role = this.utilisateurForm.value.role.nom;
-
-    // Check if we are in edit mode or add mode
-    if (this.utilisateurToEdit) {
-      // Update existing user
-      if (this.utilisateurToEdit.id !== undefined) {
-        this.utilisateurService.mettreAJourUtilisateur(this.utilisateurToEdit.id, this.utilisateurForm.value).subscribe({
-          next: () => {
-            console.log('Utilisateur modifié avec succès');
-            this.router.navigate(['/utilisateurs']);
-          },
-          error: (err) => {
-            console.error('Erreur lors de la modification de l\'utilisateur:', err);
-            alert('Une erreur est survenue, veuillez réessayer.');
-          }
-        });
-      } else {
-        console.error('ID de l\'utilisateur à modifier est manquant.');
-      }
-    } else {
-      // Add new user
-      this.utilisateurService.ajouterUtilisateur(this.utilisateurForm.value, role).subscribe({
-        next: () => {
-          console.log('Utilisateur créé avec succès');
-          this.router.navigate(['/utilisateurs']);
-        },
-        error: (err) => {
-          console.error('Erreur lors de la création de l\'utilisateur:', err);
-          alert('Une erreur est survenue, veuillez réessayer.');
-        }
-      });
-    }
-  }
-
   toggleAjouterUtilisateur(): void {
     this.showAjouterUtilisateur = !this.showAjouterUtilisateur;
+    if (!this.showAjouterUtilisateur) {
+      this.utilisateurForm.reset();
+      this.utilisateurToEdit = undefined;
+    }
   }
 
   onEdit(utilisateur: Utilisateur): void {
@@ -162,19 +157,16 @@ export class UtilisateursComponent implements OnInit{
       age: utilisateur.age,
       sexe: utilisateur.sexe,
       role: utilisateur.role,
-      specialite: utilisateur.specialite
+      specialite: utilisateur.specialite || ''  // Initialise `specialite` pour les diététiciens
     });
     this.showAjouterUtilisateur = true;
   }
 
   onDelete(id: number): void {
-    const confirmDeletion = confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');
-    if (confirmDeletion) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       this.utilisateurService.supprimerUtilisateur(id).subscribe(() => {
         this.chargerUtilisateurs();
       });
     }
   }
-
-
 }

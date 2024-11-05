@@ -66,7 +66,16 @@ main {
   border-radius: 50%;
 }
 
+/* Style pour le conteneur du logo */
+.logo-container {
+  background-color: white; /* Fond blanc spécifique au logo */
+  padding: 16px;
+  text-align: center;
+  border-radius: 4px; /* Coins arrondis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  margin-bottom: 24px; /* Espace entre le logo et le menu */
+}
 
-
-
-
+.logo-sidebar {
+  max-width: 150px;
+}

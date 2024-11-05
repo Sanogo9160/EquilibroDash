@@ -1,5 +1,4 @@
-import {Role} from "./Role";
-import {ProfilDeSante} from "./ProfilDeSante";
+import { Role } from "./Role";
 
 export interface Utilisateur {
   id?: number;
@@ -13,10 +12,4 @@ export interface Utilisateur {
   sexe: string;
   role: Role;
   specialite?: string; // Optionnel, uniquement pour diététicien
-  //profilDeSante: ProfilDeSante;
 }
-
-
-
-
-

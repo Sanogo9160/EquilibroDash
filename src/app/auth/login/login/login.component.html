@@ -1,31 +1,44 @@
-<div class="container login-container">
-  <div class="row align-items-center justify-content-center">
-    <!-- Section gauche -->
-    <div class="col-md-6 text-center left-section">
-      <img src="assets/images/logo3.png" alt="Logo Equilibro" class="logo mb-4">
-      <h2 class="welcome-title">Bienvenue sur Equilibro</h2>
-      <p class="welcome-message">
-        Prenez soin de votre santé avec des repas équilibrés et personnalisés. Suivez vos objectifs nutritionnels au quotidien.
-      </p>
-    </div>
-    <!-- Section droite -->
-    <div class="col-md-6 right-section">
-      <form (ngSubmit)="onSubmit()" class="login-form">
-        <!-- Label et champ pour l'email -->
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Entrez votre email">
+<div class="main-container">
+  <!-- Cadre principal avec effet flou -->
+  <div class="background-overlay"></div>
+
+  <div class="login-container">
+    <!-- Cadre secondaire avec deux sections -->
+    <div class="inner-frame">
+      <!-- Section gauche avec l'image -->
+      <div class="left-section">
+        <img src="assets/images/login.png" alt="Image de fruits" class="background-image" />
+      </div>
+
+      <!-- Section droite avec le formulaire -->
+      <div class="right-section">
+        <div class="content-wrapper">
+          <div class="logo-container">
+            <img src="assets/images/logo2.png" alt="Logo Equilibro" class="logo" />
+          </div>
+          <h2 class="title">Connexion</h2>
+          <p class="subtitle">Entrez vos informations pour accéder à votre compte.</p>
+
+          <form (ngSubmit)="onSubmit()" class="login-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" [(ngModel)]="email" name="email" required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Mot de passe</mat-label>
+              <input matInput type="password" [(ngModel)]="motDePasse" name="motDePasse" required />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="loading">
+              <span *ngIf="!loading">Connexion</span>
+              <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate"></mat-progress-spinner>
+            </button>
+
+            <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+          </form>
         </div>
-        <!-- Label et champ pour le mot de passe -->
-        <div class="mb-3">
-          <label for="password" class="form-label">Mot de passe</label>
-          <input type="password" class="form-control" id="password" [(ngModel)]="motDePasse" name="motDePasse" placeholder="Entrez votre mot de passe">
-        </div>
-        <!-- Bouton de soumission -->
-        <button type="submit" class="btn btn-success w-100">Se Connecter</button>
-        <p class="forgot-password mt-3 text-center">
-        </p>
-      </form>
+      </div>
     </div>
   </div>
 </div>

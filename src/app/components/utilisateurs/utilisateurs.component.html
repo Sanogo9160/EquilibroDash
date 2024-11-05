@@ -51,6 +51,16 @@
     </div>
 
     <div class="form-group">
+      <label for="poids">Poids (kg)</label>
+      <input id="poids" formControlName="poids" type="number" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="taille">Taille (cm)</label>
+      <input id="taille" formControlName="taille" type="number" class="form-control" required>
+    </div>
+
+    <div class="form-group">
       <label for="age">Âge</label>
       <input id="age" formControlName="age" type="number" class="form-control" required>
     </div>
@@ -72,7 +82,7 @@
 
     <div *ngIf="utilisateurForm.get('role')?.value?.nom === 'DIETETICIEN'" class="form-group">
       <label for="specialite">Spécialité</label>
-      <input id="specialite" formControlName="specialite" class="form-control">
+      <input id="specialite" formControlName="specialite" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-success">Créer</button>
