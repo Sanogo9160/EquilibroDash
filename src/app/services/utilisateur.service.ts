@@ -42,31 +42,21 @@ export class UtilisateurService {
 
   // Ajouter un utilisateur en fonction de son rôle, avec ou sans authentification
   ajouterUtilisateur(utilisateur: Utilisateur): Observable<Utilisateur> {
-    const roleNom = utilisateur.role.nom;
     let endpoint = '';
 
-    // Déterminer l'endpoint selon le rôle
-    switch (roleNom) {
-      case 'ADMIN':
-        endpoint = '/ajouter/admin';
-        break;
-      case 'DIETETICIEN':
-        endpoint = '/ajouter/dieteticien';
-        break;
-      default:
-        endpoint = '/ajouter/utilisateur-simple';
-        break;
+    // Vérification de l'ID du rôle pour déterminer l'endpoint correct
+    if (utilisateur.role.id === 1) {
+      endpoint = '/ajouter/admin';
+    } else if (utilisateur.role.id === 2) {
+      endpoint = '/ajouter/dieteticien';
+    } else {
+      endpoint = '/ajouter/utilisateur-simple';
     }
 
     console.log('Données envoyées :', utilisateur);
 
-    // Choisir d'inclure ou non les en-têtes d'authentification
-    const options = endpoint === '/ajouter/utilisateur-simple'
-      ? { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-      : { headers: this.getAuthHeaders() };
-
     return this.http
-      .post<Utilisateur>(`${this.apiUrl}${endpoint}`, utilisateur, options)
+      .post<Utilisateur>(`${this.apiUrl}${endpoint}`, utilisateur, { headers: this.getAuthHeaders() })
       .pipe(
         catchError((error) => {
           console.error('Erreur lors de la requête HTTP :', error);
@@ -74,6 +64,8 @@ export class UtilisateurService {
         })
       );
   }
+
+
 
   // Méthodes existantes de mise à jour et suppression avec authentification
   mettreAJourUtilisateur(id: number, utilisateur: Utilisateur): Observable<Utilisateur> {

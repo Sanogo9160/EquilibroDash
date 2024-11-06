@@ -80,10 +80,11 @@
       </select>
     </div>
 
-    <div *ngIf="utilisateurForm.get('role')?.value?.nom === 'DIETETICIEN'" class="form-group">
+    <div *ngIf="utilisateurForm.get('role')?.value?.id === 2" class="form-group">
       <label for="specialite">Spécialité</label>
       <input id="specialite" formControlName="specialite" class="form-control" />
     </div>
+
 
     <button type="submit" class="btn btn-success">Créer</button>
     <button type="button" (click)="toggleAjouterUtilisateur()" class="btn btn-secondary">Annuler</button>

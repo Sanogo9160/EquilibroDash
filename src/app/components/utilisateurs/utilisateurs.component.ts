@@ -26,6 +26,7 @@ export class UtilisateursComponent implements OnInit {
   utilisateurForm!: FormGroup;
   showAjouterUtilisateur = false;
   utilisateurToEdit?: Utilisateur;
+  editMode = false;  // Pour suivre si on est en mode édition
   errorMessage = signal<string | null>(null);
 
   constructor(
@@ -58,10 +59,10 @@ export class UtilisateursComponent implements OnInit {
       nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       motDePasse: ['', Validators.required],
-      telephone: ['', Validators.required],
-      poids: ['', Validators.required],
-      taille: ['', Validators.required],
-      age: [0, Validators.required],
+      telephone: ['', [Validators.required, Validators.pattern(/^\d+$/)]],  // Seulement chiffres
+      poids: [0, [Validators.required, Validators.min(0)]],               // Nombre positif
+      taille: [0, [Validators.required, Validators.min(0)]],              // Nombre positif
+      age: [0, [Validators.required, Validators.min(0)]],                 // Nombre positif
       sexe: ['', Validators.required],
       role: [null as Role | null, Validators.required],
       specialite: ['']  // Optionnel, utilisé uniquement pour les diététiciens
@@ -104,7 +105,6 @@ export class UtilisateursComponent implements OnInit {
       return;
     }
 
-    // Création de `utilisateurData` avec uniquement les champs nécessaires
     const utilisateurData: any = {
       nom: this.utilisateurForm.value.nom,
       email: this.utilisateurForm.value.email,
@@ -117,36 +117,57 @@ export class UtilisateursComponent implements OnInit {
       role: { id: this.utilisateurForm.value.role.id }
     };
 
-    // Ajout conditionnel de `specialite` si le rôle est diététicien
-    if (this.utilisateurForm.value.role?.nom === 'DIETETICIEN') {
+    // Ajout conditionnel de `specialite` si le rôle est `DIETETICIEN`
+    if (this.utilisateurForm.value.role.id === 2) {
       utilisateurData.specialite = this.utilisateurForm.value.specialite;
     }
 
-    console.log('Données envoyées au backend :', utilisateurData); // Vérification des données sans `specialite` si non requise
+    if (this.editMode && this.utilisateurToEdit && this.utilisateurToEdit.id !== undefined) {
+      // Mise à jour de l'utilisateur existant avec une vérification de l'ID
+      this.utilisateurService.mettreAJourUtilisateur(this.utilisateurToEdit.id, utilisateurData).subscribe({
+        next: () => {
+          console.log('Utilisateur mis à jour avec succès');
+          this.chargerUtilisateurs();
+          this.resetForm();
+        },
+        error: (err: any) => {
+          console.error('Erreur lors de la mise à jour de l\'utilisateur:', err);
+          this.errorMessage.set("Erreur lors de la mise à jour de l'utilisateur");
+        }
+      });
+    } else {
+      // Ajout d'un nouvel utilisateur
+      this.utilisateurService.ajouterUtilisateur(utilisateurData).subscribe({
+        next: () => {
+          console.log('Utilisateur créé avec succès');
+          this.chargerUtilisateurs();
+          this.resetForm();
+        },
+        error: (err: any) => {
+          console.error('Erreur lors de la création de l\'utilisateur:', err);
+          this.errorMessage.set("Erreur lors de la création de l'utilisateur");
+        }
+      });
+    }
+  }
 
-    this.utilisateurService.ajouterUtilisateur(utilisateurData).subscribe({
-      next: () => {
-        console.log('Utilisateur créé avec succès');
-        this.chargerUtilisateurs(); // Rafraîchir la liste des utilisateurs
-        this.toggleAjouterUtilisateur(); // Cacher le formulaire
-      },
-      error: (err: any) => {
-        console.error('Erreur lors de la création de l\'utilisateur:', err);
-        this.errorMessage.set("Erreur lors de la création de l'utilisateur");
-      }
-    });
+  resetForm(): void {
+    this.utilisateurForm.reset();
+    this.showAjouterUtilisateur = false;
+    this.utilisateurToEdit = undefined;
+    this.editMode = false;  // Désactive le mode édition
   }
 
   toggleAjouterUtilisateur(): void {
     this.showAjouterUtilisateur = !this.showAjouterUtilisateur;
     if (!this.showAjouterUtilisateur) {
-      this.utilisateurForm.reset();
-      this.utilisateurToEdit = undefined;
+      this.resetForm();
     }
   }
 
   onEdit(utilisateur: Utilisateur): void {
     this.utilisateurToEdit = utilisateur;
+    this.editMode = true;  // Active le mode édition
     this.utilisateurForm.patchValue({
       nom: utilisateur.nom,
       email: utilisateur.email,
